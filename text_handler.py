@@ -3,7 +3,7 @@ import attr
 
 # from nltk.tokenize import TreebankWordTokenizer
 from nltk.tokenize import word_tokenize
-
+from nltk.probability import FreqDist
 
 # word_tokenize(text, language='english', preserve_line=False)
 
@@ -36,3 +36,14 @@ class TextHandler:
         words.sort()
         return words
         # return TreebankWordTokenizer().tokenize("".join(self.texts))
+
+    def sw_frequency_distribution(self):
+        words = word_tokenize(" ".join(self.texts), language="portuguese")
+        words = [word.lower() for word in words]
+        words = [word for word in words if word not in string.punctuation]
+        words = list(words)
+
+        words.sort()
+        freq_dist = FreqDist(words)
+
+        return [freq for freq in freq_dist.values()]
