@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import inspect
 import pytest
@@ -46,9 +45,11 @@ class TestSwVocabularyMethod:
 
     def test_if_return_list_with_ignored_punctuation(self):
         text_handler = TextHandler(
-            ["bernardo gomes; abreu. a! a# a% a$ a' a& a) a( a, a; a: a< a? a> a@ a[ a] a` a{ a} "]
+            [
+                "bernardo gomes; abreu. yasmine! yasmine# yasmine% yasmine$ yasmine' yasmine& yasmine) yasmine( yasmine, yasmine; yasmine: yasmine< yasmine? yasmine> yasmine@ yasmine[ yasmine] yasmine` yasmine{ yasmine} "
+            ]
         )
-        assert text_handler.sw_vocabulary() == ["a", "abreu", "bernardo", "gomes"]
+        assert text_handler.sw_vocabulary() == ["abreu", "bernardo", "gomes", "yasmine"]
 
     def test_if_return_list_with_ignored_case(self):
         text_handler = TextHandler(["bernardo GOMES; Abreu."])
@@ -57,6 +58,27 @@ class TestSwVocabularyMethod:
     def test_if_return_list_when_the_params_is_multiple_texts(self):
         text_handler = TextHandler(
             ["bernardo GOMES; Abreu.", "YASMINE", "Melo", "Costa", "Leonardo Gomes Abreu"]
+        )
+        assert text_handler.sw_vocabulary() == [
+            "abreu",
+            "bernardo",
+            "costa",
+            "gomes",
+            "leonardo",
+            "melo",
+            "yasmine",
+        ]
+
+    def test_if_return_list_without_stop_words(self):
+        text_handler = TextHandler(
+            [
+                "bernardo GOMES; de Abreu.",
+                "YASMINE",
+                "de",
+                "Melo",
+                "Costa",
+                "Leonardo Gomes de Abreu",
+            ]
         )
         assert text_handler.sw_vocabulary() == [
             "abreu",
