@@ -41,8 +41,8 @@ class TextHandler:
     def _remove_words_start_with_number(self, words):
         return [word for word in words if check_if_word_start_with_number.match(word) is None]
 
-    def _word_tokenize_texts(self):
-        return word_tokenize(" ".join(self.texts), language="portuguese")
+    def _word_tokenize_texts(self, text):
+        return word_tokenize(text, language="portuguese")
 
     def _transform_to_lower_each_word(self, words):
         return [word.lower() for word in words]
@@ -56,54 +56,88 @@ class TextHandler:
     def _calcule_frequence(self, words):
         return FreqDist(words)
 
-    def _base_vocabulary(self):
-        words = self._word_tokenize_texts()
+    def _replace_hyphen(self, string_words):
+        return string_words.replace("-", " ")
+
+    def _base_vocabulary(self, text):
+        words = self._word_tokenize_texts(text)
+        words = self._transform_to_lower_each_word(words)
         words = self._remove_stop_words(words)
         words = self._remove_words_start_with_number(words)
-        words = self._transform_to_lower_each_word(words)
+
         words = self._remove_punctuation(words)
 
         return words
 
-    def _base_frequency_distribution(self):
-        words = self._word_tokenize_texts()
-        words = self._remove_stop_words(words)
+    def _base_frequency_distribution(self, text):
+
+        words = self._word_tokenize_texts(text)
         words = self._transform_to_lower_each_word(words)
+        words = self._remove_stop_words(words)
         words = self._remove_punctuation(words)
+        words = self._remove_words_start_with_number(words)
 
         return words
 
     def sw_vocabulary(self):
-        words = self._base_vocabulary()
-
+        words = self._base_vocabulary(self._replace_hyphen(" ".join(self.texts)))
         words = OrderedDict.fromkeys(words)
         words = list(words)
 
         return words
 
     def sw_frequency_distribution(self):
-        words = self._base_frequency_distribution()
-        freq_dist = self._calcule_frequence(words)
+        words_every_texts = self._base_frequency_distribution(
+            self._replace_hyphen(" ".join(self.texts))
+        )
 
-        words = self._remove_duplicated_without_lost_order(words)
+        words_every_texts = OrderedDict.fromkeys(words_every_texts)
+        words_every_texts = list(words_every_texts)
 
-        return [freq_dist[key] for key in words]
+        frequency_distribution_result = []
+
+        for index, text in enumerate(self.texts, start=1):
+            words = self._base_frequency_distribution(self._replace_hyphen(text))
+            freq_dist = self._calcule_frequence(words)
+            words = self._remove_duplicated_without_lost_order(words)
+            frequency_distribution_result.append(
+                {f"text{index}": [freq_dist[word] for word in words_every_texts]}
+            )
+
+        return frequency_distribution_result
 
     def ng_vocabulary(self, num_gram=2):
-        words = self._base_vocabulary()
+        vocabulary_result = []
 
-        words = ngrams(words, num_gram)
-        words = self._remove_duplicated_without_lost_order(words)
-        words = list(words)
-        return words
+        for text in self.texts:
+            words = self._base_vocabulary(text)
+
+            vocabulary_result.extend(ngrams(words, num_gram))
+
+        vocabulary_result = self._remove_duplicated_without_lost_order(vocabulary_result)
+
+        vocabulary_result = list(vocabulary_result)
+        return vocabulary_result
 
     def ng_frequency_distribution(self, num_gram=2):
-        words = self._base_frequency_distribution()
+        words_every_texts = []
 
-        words = list(ngrams(words, num_gram))
+        for index, text in enumerate(self.texts, start=1):
+            words = self._base_frequency_distribution(self._replace_hyphen(text))
+            words_every_texts.extend(list(ngrams(words, num_gram)))
 
-        freq_dist = self._calcule_frequence(words)
+        words_every_texts = OrderedDict.fromkeys(words_every_texts)
+        words_every_texts = list(words_every_texts)
 
-        words = self._remove_duplicated_without_lost_order(words)
+        frequency_distribution_result = []
 
-        return [freq_dist[key] for key in words]
+        for index, text in enumerate(self.texts, start=1):
+            words = self._base_frequency_distribution(self._replace_hyphen(text))
+            words = list(ngrams(words, num_gram))
+            freq_dist = self._calcule_frequence(words)
+            words = self._remove_duplicated_without_lost_order(words)
+            frequency_distribution_result.append(
+                {f"text{index}": [freq_dist[word] for word in words_every_texts]}
+            )
+
+        return frequency_distribution_result
