@@ -49,7 +49,7 @@ class TestSwVocabularyMethod:
 
     def test_if_return_list_with_single_words_in_order(self):
         text_handler = TextHandler(["bernardo gomes abreu"])
-        assert text_handler.sw_vocabulary() == ["abreu", "bernardo", "gomes"]
+        assert text_handler.sw_vocabulary() == ["bernardo", "gomes", "abreu"]
 
     def test_if_return_list_with_ignored_punctuation(self):
         text_handler = TextHandler(
@@ -57,24 +57,24 @@ class TestSwVocabularyMethod:
                 "bernardo gomes; abreu. yasmine! yasmine# yasmine% yasmine$ yasmine' yasmine& yasmine) yasmine( yasmine, yasmine; yasmine: yasmine< yasmine? yasmine> yasmine@ yasmine[ yasmine] yasmine` yasmine{ yasmine} "
             ]
         )
-        assert text_handler.sw_vocabulary() == ["abreu", "bernardo", "gomes", "yasmine"]
+        assert text_handler.sw_vocabulary() == ["bernardo", "gomes", "abreu", "yasmine"]
 
     def test_if_return_list_with_ignored_case(self):
         text_handler = TextHandler(["bernardo GOMES; Abreu."])
-        assert text_handler.sw_vocabulary() == ["abreu", "bernardo", "gomes"]
+        assert text_handler.sw_vocabulary() == ["bernardo", "gomes", "abreu"]
 
     def test_if_return_list_when_the_params_is_multiple_texts(self):
         text_handler = TextHandler(
             ["bernardo GOMES; Abreu.", "YASMINE", "Melo", "Costa", "Leonardo Gomes Abreu"]
         )
         assert text_handler.sw_vocabulary() == [
-            "abreu",
             "bernardo",
-            "costa",
             "gomes",
-            "leonardo",
-            "melo",
+            "abreu",
             "yasmine",
+            "melo",
+            "costa",
+            "leonardo",
         ]
 
     def test_if_return_list_without_stop_words(self):
@@ -89,13 +89,13 @@ class TestSwVocabularyMethod:
             ]
         )
         assert text_handler.sw_vocabulary() == [
-            "abreu",
             "bernardo",
-            "costa",
             "gomes",
-            "leonardo",
-            "melo",
+            "abreu",
             "yasmine",
+            "melo",
+            "costa",
+            "leonardo",
         ]
 
 

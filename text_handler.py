@@ -52,13 +52,11 @@ class TextHandler:
         words = self._word_tokenize_texts()
         words = self._remove_stop_words(words)
         words = self._transform_to_lower_each_word(words)
-        words = set(words)
-        words = words - set(string.punctuation)
+        words = self._remove_punctuation(words)
+        words = OrderedDict.fromkeys(words)
         words = list(words)
-        words.sort()
 
         return words
-        # return TreebankWordTokenizer().tokenize("".join(self.texts))
 
     def sw_frequency_distribution(self):
         words = self._word_tokenize_texts()
