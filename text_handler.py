@@ -56,23 +56,33 @@ class TextHandler:
     def _calcule_frequence(self, words):
         return FreqDist(words)
 
-    def sw_vocabulary(self):
+    def _base_vocabulary(self):
         words = self._word_tokenize_texts()
         words = self._remove_stop_words(words)
         words = self._remove_words_start_with_number(words)
         words = self._transform_to_lower_each_word(words)
         words = self._remove_punctuation(words)
+
+        return words
+
+    def _base_frequency_distribution(self):
+        words = self._word_tokenize_texts()
+        words = self._remove_stop_words(words)
+        words = self._transform_to_lower_each_word(words)
+        words = self._remove_punctuation(words)
+
+        return words
+
+    def sw_vocabulary(self):
+        words = self._base_vocabulary()
+
         words = OrderedDict.fromkeys(words)
         words = list(words)
 
         return words
 
     def sw_frequency_distribution(self):
-        words = self._word_tokenize_texts()
-        words = self._remove_stop_words(words)
-        words = self._transform_to_lower_each_word(words)
-        words = self._remove_punctuation(words)
-
+        words = self._base_frequency_distribution()
         freq_dist = self._calcule_frequence(words)
 
         words = self._remove_duplicated_without_lost_order(words)
@@ -80,22 +90,16 @@ class TextHandler:
         return [freq_dist[key] for key in words]
 
     def ng_vocabulary(self, num_gram=2):
-        words = self._word_tokenize_texts()
-        words = self._remove_stop_words(words)
-        words = self._remove_words_start_with_number(words)
-        words = self._transform_to_lower_each_word(words)
-        words = self._remove_punctuation(words)
+        words = self._base_vocabulary()
+
         words = ngrams(words, num_gram)
         words = self._remove_duplicated_without_lost_order(words)
         words = list(words)
         return words
 
     def ng_frequency_distribution(self, num_gram=2):
+        words = self._base_frequency_distribution()
 
-        words = self._word_tokenize_texts()
-        words = self._remove_stop_words(words)
-        words = self._transform_to_lower_each_word(words)
-        words = self._remove_punctuation(words)
         words = list(ngrams(words, num_gram))
 
         freq_dist = self._calcule_frequence(words)
