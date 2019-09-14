@@ -115,7 +115,23 @@ class TestSwFrequencyDistributionMethod:
         text_handler = TextHandler(
             ["bernardo GOMES; Abreu.", "YASMINE", "Melo", "Costa", "Leonardo Gomes Abreu"]
         )
-        assert text_handler.sw_frequency_distribution() == [2, 1, 1, 2, 1, 1, 1]
+        bernardo = 1
+        gomes = 2
+        abreu = 2
+        yasmine = 1
+        melo = 1
+        costa = 1
+        leonardo = 1
+
+        assert text_handler.sw_frequency_distribution() == [
+            bernardo,
+            gomes,
+            abreu,
+            yasmine,
+            melo,
+            costa,
+            leonardo,
+        ]
 
 
 class TestNgVocabularyMethod:

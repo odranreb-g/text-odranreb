@@ -48,6 +48,12 @@ class TextHandler:
     def _remove_punctuation(self, words):
         return [word for word in words if word not in string.punctuation]
 
+    def _remove_duplicated_without_lost_order(self, words):
+        return OrderedDict.fromkeys(words)
+
+    def _calcule_frequence(self, words):
+        return FreqDist(words)
+
     def sw_vocabulary(self):
         words = self._word_tokenize_texts()
         words = self._remove_stop_words(words)
@@ -63,11 +69,12 @@ class TextHandler:
         words = self._remove_stop_words(words)
         words = self._transform_to_lower_each_word(words)
         words = self._remove_punctuation(words)
-        words.sort()
 
-        freq_dist = FreqDist(words)
+        freq_dist = self._calcule_frequence(words)
 
-        return [freq for freq in freq_dist.values()]
+        words = self._remove_duplicated_without_lost_order(words)
+
+        return [freq_dist[key] for key in words]
 
     def ng_vocabulary(self, num_gram=2):
         words = self._word_tokenize_texts()
@@ -75,7 +82,7 @@ class TextHandler:
         words = self._transform_to_lower_each_word(words)
         words = self._remove_punctuation(words)
         words = ngrams(words, num_gram)
-        words = OrderedDict.fromkeys(words)
+        words = self._remove_duplicated_without_lost_order(words)
         words = list(words)
         return words
 
@@ -87,8 +94,8 @@ class TextHandler:
         words = self._remove_punctuation(words)
         words = list(ngrams(words, num_gram))
 
-        freq_dist = FreqDist(words)
+        freq_dist = self._calcule_frequence(words)
 
-        words = OrderedDict.fromkeys(words)
+        words = self._remove_duplicated_without_lost_order(words)
 
         return [freq_dist[key] for key in words]
