@@ -10,6 +10,7 @@ pytest-watch = "*"
 
 [packages]
 attrs = "*"
+nltk = "===3.4.5"
 
 [requires]
 python_version = "3.7"

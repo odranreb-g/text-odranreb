@@ -25,3 +25,20 @@ class TestTextHandler:
         text_handler = TextHandler(["bufalo bufalo bufalo"])
         assert isinstance(text_handler.texts, list)
 
+    def test_if_return_list_with_single_words_and_unique_items(self):
+        text_handler = TextHandler(["bufalo bufalo bufalo"])
+        assert text_handler.sw_vocabulary() == ["bufalo"]
+
+    def test_if_return_list_with_single_words_in_order(self):
+        text_handler = TextHandler(["bernardo gomes abreu"])
+        assert text_handler.sw_vocabulary() == ["abreu", "bernardo", "gomes"]
+
+    def test_if_return_list_with_with_ignored_punctuation(self):
+        text_handler = TextHandler(
+            ["bernardo gomes; abreu. a! a# a% a$ a' a& a) a( a, a; a: a< a? a> a@ a[ a] a` a{ a} "]
+        )
+        assert text_handler.sw_vocabulary() == ["a", "abreu", "bernardo", "gomes"]
+
+    def test_if_return_list_with_with_ignored_case(self):
+        text_handler = TextHandler(["bernardo GOMES; Abreu."])
+        assert text_handler.sw_vocabulary() == ["abreu", "bernardo", "gomes"]
