@@ -14,6 +14,10 @@ class TestTextHandler:
         with pytest.raises(ValueError):
             TextHandler("bufalo bufalo bufalo")
 
+    def test_it_should_throw_exception_with_wrong_child_param(self):
+        with pytest.raises(ValueError):
+            TextHandler(["teste", None, 1, 2.3, True])
+
     def test_it_should_receive_list_of_text_by_param(self):
         text_handler = TextHandler(["bufalo bufalo bufalo"])
         assert isinstance(text_handler.texts, list)

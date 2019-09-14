@@ -19,6 +19,7 @@
 2. it should keep just one entry of each word
 3. it should fit together every text inside of system to create list with every valid word
 4. it should calculate the quantity of occorrence of the each word(in list of item#3) for each text
+5. it should remove stop-words
 
 Example: [falar, é, facil, mostre]
 
@@ -28,5 +29,6 @@ Example: [falar, é, facil, mostre]
 2. it should keep just one entry of each (tuple(2elements) word)
 3. it should fit together every text inside of system to create list with every valid word
 4. it should calculate the quantity of occorrence of the each word(in list of item#3) for each text
+5. it should remove stop-words
 
 Example: [(falar, é,), (é, fácil), (facil, mostre)]

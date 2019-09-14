@@ -26,6 +26,9 @@ class TextHandler:
         if not isinstance(value, list):
             raise ValueError("the value must be list.")
 
+        if not all([isinstance(v, str) for v in value]):
+            raise ValueError("Every item inside the list must me string.")
+
     def sw_vocabulary(self):
         words = word_tokenize(" ".join(self.texts), language="portuguese")
         words = [word.lower() for word in words]
