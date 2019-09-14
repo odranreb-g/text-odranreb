@@ -59,18 +59,7 @@ class TextHandler:
     def _replace_hyphen(self, string_words):
         return string_words.replace("-", " ")
 
-    def _base_vocabulary(self, text):
-        words = self._word_tokenize_texts(text)
-        words = self._transform_to_lower_each_word(words)
-        words = self._remove_stop_words(words)
-        words = self._remove_words_start_with_number(words)
-
-        words = self._remove_punctuation(words)
-
-        return words
-
-    def _base_frequency_distribution(self, text):
-
+    def _base(self, text):
         words = self._word_tokenize_texts(text)
         words = self._transform_to_lower_each_word(words)
         words = self._remove_stop_words(words)
@@ -80,16 +69,14 @@ class TextHandler:
         return words
 
     def sw_vocabulary(self):
-        words = self._base_vocabulary(self._replace_hyphen(" ".join(self.texts)))
+        words = self._base(self._replace_hyphen(" ".join(self.texts)))
         words = OrderedDict.fromkeys(words)
         words = list(words)
 
         return words
 
     def sw_frequency_distribution(self):
-        words_every_texts = self._base_frequency_distribution(
-            self._replace_hyphen(" ".join(self.texts))
-        )
+        words_every_texts = self._base(self._replace_hyphen(" ".join(self.texts)))
 
         words_every_texts = OrderedDict.fromkeys(words_every_texts)
         words_every_texts = list(words_every_texts)
@@ -97,7 +84,7 @@ class TextHandler:
         frequency_distribution_result = []
 
         for index, text in enumerate(self.texts, start=1):
-            words = self._base_frequency_distribution(self._replace_hyphen(text))
+            words = self._base(self._replace_hyphen(text))
             freq_dist = self._calcule_frequence(words)
             words = self._remove_duplicated_without_lost_order(words)
             frequency_distribution_result.append(
@@ -110,7 +97,7 @@ class TextHandler:
         vocabulary_result = []
 
         for text in self.texts:
-            words = self._base_vocabulary(text)
+            words = self._base(text)
 
             vocabulary_result.extend(ngrams(words, num_gram))
 
@@ -123,7 +110,7 @@ class TextHandler:
         words_every_texts = []
 
         for index, text in enumerate(self.texts, start=1):
-            words = self._base_frequency_distribution(self._replace_hyphen(text))
+            words = self._base(self._replace_hyphen(text))
             words_every_texts.extend(list(ngrams(words, num_gram)))
 
         words_every_texts = OrderedDict.fromkeys(words_every_texts)
@@ -132,7 +119,7 @@ class TextHandler:
         frequency_distribution_result = []
 
         for index, text in enumerate(self.texts, start=1):
-            words = self._base_frequency_distribution(self._replace_hyphen(text))
+            words = self._base(self._replace_hyphen(text))
             words = list(ngrams(words, num_gram))
             freq_dist = self._calcule_frequence(words)
             words = self._remove_duplicated_without_lost_order(words)
