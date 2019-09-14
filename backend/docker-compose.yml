@@ -1,0 +1,20 @@
+version: '2'
+services:
+  postgre:
+    image: postgres:11.5-alpine
+    ports:
+       - '127.0.0.1:5432:5432'
+    volumes:
+      - 'ctest_data:/var/lib/postgresql11/data/'
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+  adminer:
+    image: adminer:4.7.2
+    ports:
+        - '127.0.0.1:8080:8080'
+    depends_on:
+      - postgre
+volumes:
+  ctest_data:
