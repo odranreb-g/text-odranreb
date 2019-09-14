@@ -5,8 +5,14 @@ verify_ssl = true
 
 [dev-packages]
 pytest = "===5.1.2"
+black = "*"
+pytest-watch = "*"
 
 [packages]
+attrs = "*"
 
 [requires]
 python_version = "3.7"
+
+[pipenv]
+allow_prereleases = true
