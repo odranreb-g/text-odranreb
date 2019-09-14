@@ -1,16 +1,15 @@
 from collections import OrderedDict
 import string
+import re
 
 import attr
 
 from text_handler_utils import stop_words_portuguese
-
-# from nltk.tokenize import TreebankWordTokenizer
 from nltk.probability import FreqDist
 from nltk.tokenize import word_tokenize
 from nltk.util import ngrams
 
-# word_tokenize(text, language='english', preserve_line=False)
+check_if_word_start_with_number = re.compile(r"^\d.*")
 
 
 @attr.s
@@ -39,6 +38,9 @@ class TextHandler:
     def _remove_stop_words(self, words):
         return [word for word in words if word not in stop_words_portuguese]
 
+    def _remove_words_start_with_number(self, words):
+        return [word for word in words if check_if_word_start_with_number.match(word) is None]
+
     def _word_tokenize_texts(self):
         return word_tokenize(" ".join(self.texts), language="portuguese")
 
@@ -57,6 +59,7 @@ class TextHandler:
     def sw_vocabulary(self):
         words = self._word_tokenize_texts()
         words = self._remove_stop_words(words)
+        words = self._remove_words_start_with_number(words)
         words = self._transform_to_lower_each_word(words)
         words = self._remove_punctuation(words)
         words = OrderedDict.fromkeys(words)
@@ -79,6 +82,7 @@ class TextHandler:
     def ng_vocabulary(self, num_gram=2):
         words = self._word_tokenize_texts()
         words = self._remove_stop_words(words)
+        words = self._remove_words_start_with_number(words)
         words = self._transform_to_lower_each_word(words)
         words = self._remove_punctuation(words)
         words = ngrams(words, num_gram)

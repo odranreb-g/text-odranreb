@@ -98,6 +98,28 @@ class TestSwVocabularyMethod:
             "leonardo",
         ]
 
+    def test_if_return_list_without_words_that_started_with_number(self):
+        text_handler = TextHandler(
+            [
+                "bernardo GOMES; de Abreu.",
+                "YASMINE",
+                "de",
+                "Melo",
+                "Costa",
+                "Leonardo Gomes de Abreu",
+                "1Teste",
+            ]
+        )
+        assert text_handler.sw_vocabulary() == [
+            "bernardo",
+            "gomes",
+            "abreu",
+            "yasmine",
+            "melo",
+            "costa",
+            "leonardo",
+        ]
+
 
 class TestSwFrequencyDistributionMethod:
     def test_if_return_list_the_frequence_of_list_with_unique_word(self):
@@ -178,6 +200,28 @@ class TestNgVocabularyMethod:
                 "Melo",
                 "Costa",
                 "Leonardo Gomes de Abreu",
+            ]
+        )
+        assert text_handler.ng_vocabulary() == [
+            ("bernardo", "gomes"),
+            ("gomes", "abreu"),
+            ("abreu", "yasmine"),
+            ("yasmine", "melo"),
+            ("melo", "costa"),
+            ("costa", "leonardo"),
+            ("leonardo", "gomes"),
+        ]
+
+    def test_if_return_list_without_words_started_with_numbers(self):
+        text_handler = TextHandler(
+            [
+                "bernardo GOMES; de Abreu.",
+                "YASMINE",
+                "de",
+                "Melo",
+                "Costa",
+                "Leonardo Gomes de Abreu",
+                "1Teste",
             ]
         )
         assert text_handler.ng_vocabulary() == [
