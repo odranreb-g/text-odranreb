@@ -175,20 +175,36 @@ class TestNgVocabularyMethod:
         ]
 
 
-# class TestNgFrequencyDistributionMethod:
-#     def test_if_return_list_the_frequence_of_list_with_unique_word(self):
-#         text_handler = TextHandler(["bufalo"])
-#         assert text_handler.ng_frequency_distribution() == []
+class TestNgFrequencyDistributionMethod:
+    def test_if_return_list_the_frequence_of_list_with_unique_word(self):
+        text_handler = TextHandler(["bufalo"])
+        assert text_handler.ng_frequency_distribution() == []
 
-#         text_handler = TextHandler(["bufalo bufalo bufalo"])
-#         assert text_handler.ng_frequency_distribution() == [2]
+        text_handler = TextHandler(["bufalo bufalo bufalo"])
+        assert text_handler.ng_frequency_distribution() == [2]
 
-#     def test_if_return_list_the_frequence_of_text_empty(self):
-#         text_handler = TextHandler([])
-#         assert text_handler.ng_frequency_distribution() == []
+    def test_if_return_list_the_frequence_of_text_empty(self):
+        text_handler = TextHandler([])
+        assert text_handler.ng_frequency_distribution() == []
 
-#     def test_if_return_list_the_frequence_of_multiples_text(self):
-#         text_handler = TextHandler(
-#             ["bernardo GOMES; Abreu.", "YASMINE", "Melo", "Costa", "Leonardo Gomes Abreu"]
-#         )
-#         assert text_handler.ng_frequency_distribution() == [2, 1, 1, 2, 1, 1, 1]
+    def test_if_return_list_the_frequence_of_multiples_text(self):
+        text_handler = TextHandler(
+            ["bernardo GOMES; Abreu.", "YASMINE", "Melo", "Costa", "Leonardo Gomes Abreu"]
+        )
+        bernardo_gomes = 1
+        gomes_abreu = 2
+        abreu_yasmine = 1
+        yasmine_melo = 1
+        melo_costa = 1
+        costa_leonardo = 1
+        leonardo_gomes = 1
+        assert text_handler.ng_frequency_distribution() == [
+            bernardo_gomes,
+            gomes_abreu,
+            abreu_yasmine,
+            yasmine_melo,
+            melo_costa,
+            costa_leonardo,
+            leonardo_gomes,
+        ]
+

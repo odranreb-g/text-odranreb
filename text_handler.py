@@ -76,29 +76,21 @@ class TextHandler:
         words = self._remove_stop_words(words)
         words = self._transform_to_lower_each_word(words)
         words = self._remove_punctuation(words)
-        # words = set(words)
-
-        # words = list(words)
-        # words.sort()
-        words = list(ngrams(words, num_gram))
+        words = ngrams(words, num_gram)
         words = OrderedDict.fromkeys(words)
         words = list(words)
         return words
 
     def ng_frequency_distribution(self, num_gram=2):
-        pass
 
-    #     words = self._word_tokenize_texts()
-    #     words = self._remove_stop_words(words)
-    #     words = self._transform_to_lower_each_word(words)
-    #     words = self._remove_punctuation(words)
+        words = self._word_tokenize_texts()
+        words = self._remove_stop_words(words)
+        words = self._transform_to_lower_each_word(words)
+        words = self._remove_punctuation(words)
+        words = list(ngrams(words, num_gram))
 
-    #     words = list(ngrams(words, num_gram))
-    #     words.sort()
+        freq_dist = FreqDist(words)
 
-    #     freq_dist = FreqDist(words)
+        words = OrderedDict.fromkeys(words)
 
-    #     return list(freq_dist.values())
-    #     # return [freq for freq in freq_dist.values()]
-
-    #     # return words
+        return [freq_dist[key] for key in words]
