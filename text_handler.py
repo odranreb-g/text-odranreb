@@ -15,7 +15,7 @@ class TextHandler:
 
         the sw is abreviation of single word.
 
-        every word will be converted to lower case.
+        every word will be converted to lower case. s
     """
 
     texts = attr.ib()
@@ -27,11 +27,12 @@ class TextHandler:
             raise ValueError("the value must be list.")
 
     def sw_vocabulary(self):
-        words = set(word_tokenize("".join(self.texts), language="portuguese"))
-
+        words = word_tokenize(" ".join(self.texts), language="portuguese")
+        words = [word.lower() for word in words]
+        words = set(words)
         words = words - set(string.punctuation)
         words = list(words)
-        words = [word.lower() for word in words]
+
         words.sort()
         return words
         # return TreebankWordTokenizer().tokenize("".join(self.texts))
