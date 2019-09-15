@@ -1,7 +1,12 @@
 from flask import request
 from flask_restplus import Resource, Api
 from marshmallow.exceptions import ValidationError
-from app.api_v1.schemas import FrequenceDistributionSchema, SendTextSchema, VocabularySchema
+from app.api_v1.schemas import (
+    FrequenceDistributionSchema,
+    Gram2VocabularySchema,
+    SendTextSchema,
+    VocabularySchema,
+)
 from app.models import Text
 from app.extensions import db
 from app.text_handler.text_handler import TextHandler
@@ -56,3 +61,16 @@ class IsolatedFrequencyDistributionAPI(Resource):
         schema = FrequenceDistributionSchema()
 
         return schema.load(frequency), 200
+
+
+@api_restfull.route("/ngran-vocabulary")
+class NGramVocabularyAPI(Resource):
+    def get(self):
+        list_of_texts = [text for text, in db.session.query(Text.text).order_by(Text.id).all()]
+        text_handler = TextHandler(list_of_texts)
+
+        vocabulary = {"vocabulary": text_handler.ng_vocabulary()}
+
+        schema = Gram2VocabularySchema()
+
+        return schema.load(vocabulary), 200

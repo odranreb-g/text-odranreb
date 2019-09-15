@@ -167,3 +167,67 @@ class TestIsolatedFrequencyDistributionAPI:
             }
         }
 
+
+@pytest.mark.usefixtures("client_class")
+class TestNGramVocabularyAPI:
+    @pytest.fixture(autouse=True)
+    def data_remove_db_test(self):
+        db.session.query(Text).delete()
+
+    def test_check_methods(self, client):
+        response = client.post(url_for("api.n_gram_vocabulary_api"))
+        assert response.status_code == HTTPStatus.METHOD_NOT_ALLOWED
+        response = client.put(url_for("api.n_gram_vocabulary_api"))
+        assert response.status_code == HTTPStatus.METHOD_NOT_ALLOWED
+        response = client.delete(url_for("api.n_gram_vocabulary_api"))
+        assert response.status_code == HTTPStatus.METHOD_NOT_ALLOWED
+        response = client.patch(url_for("api.n_gram_vocabulary_api"))
+        assert response.status_code == HTTPStatus.METHOD_NOT_ALLOWED
+
+    def test_get_vocabulary_with_zero_texts(self, client):
+        response = client.get(url_for("api.n_gram_vocabulary_api"))
+        assert response.status_code == HTTPStatus.OK
+        assert response.get_json() == {"vocabulary": []}
+
+    def test_get_vocabulary_with_one_text(self, client):
+        text = Text()
+        text.text = "Just a simple text"
+        db.session.add(text)
+        db.session.commit()
+
+        response = client.get(url_for("api.n_gram_vocabulary_api"))
+        assert response.status_code == HTTPStatus.OK
+
+        assert response.get_json() == {"vocabulary": [["just", "simple"], ["simple", "text"]]}
+
+    def test_get_vocabulary_with_multiple_text(self, client):
+        text = Text()
+        text.text = "Um simples teste"
+        db.session.add(text)
+        db.session.flush()
+
+        text = Text()
+        text.text = "Pytest é a melhor biblioteca de testes"
+        db.session.add(text)
+        db.session.flush()
+
+        text = Text()
+        text.text = "Eu estou utilizando Flask framework"
+        db.session.add(text)
+        db.session.flush()
+
+        db.session.commit()
+
+        response = client.get(url_for("api.n_gram_vocabulary_api"))
+        assert response.status_code == HTTPStatus.OK
+        assert response.get_json() == {
+            "vocabulary": [
+                ["simples", "teste"],
+                ["pytest", "melhor"],
+                ["melhor", "biblioteca"],
+                ["biblioteca", "testes"],
+                ["estou", "utilizando"],
+                ["utilizando", "flask"],
+                ["flask", "framework"],
+            ]
+        }
