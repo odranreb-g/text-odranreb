@@ -62,3 +62,12 @@ Must be a simple flask app.
 
 6. api/v1/delete-text/<int:textId>
     accept only delete. (Maybe I will do this if I have time to build frontend side)
+
+
+
+## Frontend
+
+1. It should be a menu bar to choose option what to do
+2. if click in any button, the action should be display in screen.
+3. each action should request from server
+4. the send text must be a text area to input the text
