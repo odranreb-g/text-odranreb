@@ -8,3 +8,9 @@ class SendTextSchema(Schema):
     class Meta:
         unknown = EXCLUDE
 
+
+class VocabularySchema(Schema):
+    vocabulary = fields.List(fields.String(), required=True)
+
+    class Meta:
+        unknown = EXCLUDE

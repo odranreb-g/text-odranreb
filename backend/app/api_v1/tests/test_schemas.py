@@ -1,9 +1,10 @@
 import pytest
+from marshmallow import Schema
 from marshmallow.exceptions import ValidationError
-from app.api_v1.schemas import SendTextSchema
+from app.api_v1.schemas import SendTextSchema, VocabularySchema
 
 
-class TestSendText:
+class TestSendTextSchema:
     def test_validate_should_throw_expectio_when_validate_wrong_data(self):
         with pytest.raises(ValidationError):
             data = {"country": "brazil"}
@@ -38,3 +39,28 @@ class TestSendText:
         del data["another"]
         assert data == new_data
 
+
+class TestVocabularySchema:
+    @pytest.fixture(autouse=True)
+    def data_remove_db_test(self):
+        self.schema = VocabularySchema()
+
+    def test_should_be_instace_of_schema(self):
+        assert isinstance(self.schema, Schema)
+
+    def test_validate_should_throw_expectio_when_validate_wrong_data(self):
+        with pytest.raises(ValidationError):
+            data = {"country": "brazil"}
+            self.schema.load(data)
+
+    def test_dump_should_create_a_json_with_id_and_text(self):
+        data = {"vocabulary": ["aab", "bab", "aa", "ab"]}
+        new_data = self.schema.load(data)
+        assert data == new_data
+
+    def test_dump_should_create_a_json_with_only_field_represented_in_schema(self):
+        data = {"vocabulary": ["aab", "bab", "aa", "ab"], "another": [1, 2, 3, 4]}
+
+        new_data = self.schema.load(data)
+        del data["another"]
+        assert data == new_data
