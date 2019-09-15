@@ -74,3 +74,16 @@ class NGramVocabularyAPI(Resource):
         schema = Gram2VocabularySchema()
 
         return schema.load(vocabulary), 200
+
+
+@api_restfull.route("/ngran-frequency-distribution")
+class NGramFrequencyDistributionAPI(Resource):
+    def get(self):
+        list_of_texts = [text for text, in db.session.query(Text.text).order_by(Text.id).all()]
+        text_handler = TextHandler(list_of_texts)
+
+        frequency = {"frequency": text_handler.ng_frequency_distribution()}
+
+        schema = FrequenceDistributionSchema()
+
+        return schema.load(frequency), 200
