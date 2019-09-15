@@ -138,7 +138,7 @@ class TestIsolatedFrequencyDistributionAPI:
         assert response.status_code == HTTPStatus.OK
         assert response.get_json() == {"frequency": {"text1": [1, 1, 1]}}
 
-    def test_get_frequency_distribution_one_texts(self, client):
+    def test_get_frequency_distribution_multiple_texts(self, client):
         text = Text()
         text.text = "Um simples teste"
         db.session.add(text)
@@ -264,7 +264,7 @@ class TestGram2FrequencyDistributionAPI:
         assert response.status_code == HTTPStatus.OK
         assert response.get_json() == {"frequency": {"text1": [1, 1]}}
 
-    def test_get_frequency_distribution_one_texts(self, client):
+    def test_get_frequency_distribution_multiple_texts(self, client):
         text = Text()
         text.text = "Um simples teste"
         db.session.add(text)

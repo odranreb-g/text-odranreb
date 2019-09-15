@@ -111,7 +111,6 @@ class TestFrequenceDistributionSchemaSchema:
         with pytest.raises(ValidationError):
             data = {"frequency": ["aab", "bab", "aa", "ab"]}
             new_data = self.schema.load(data)
-            assert data == new_data
 
     def test_load_should_create_a_json_with_validate_data(self):
         data = {"frequency": {"text1": [1, 2, 3], "text2": [5, 6, 7]}}
@@ -132,7 +131,6 @@ class TestFrequenceDistributionSchemaSchema:
         with pytest.raises(ValidationError):
             data = {"frequency": {"text1": [1, "2", 3], "text2": [5, 6, 7]}}
             new_data = self.schema.load(data)
-            assert data == new_data
 
 
 class TestGram2VocabularySchema:
