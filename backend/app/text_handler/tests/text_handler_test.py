@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import inspect
 import pytest
-from text_handler import TextHandler
+from app.text_handler.text_handler import TextHandler
 
 
 class TestTextHandler:

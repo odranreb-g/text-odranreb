@@ -4,7 +4,7 @@ import re
 
 import attr
 
-from text_handler_utils import stop_words_portuguese
+from app.text_handler.text_handler_utils import stop_words_portuguese
 from nltk.probability import FreqDist
 from nltk.tokenize import word_tokenize
 from nltk.util import ngrams
