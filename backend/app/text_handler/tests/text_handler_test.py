@@ -124,14 +124,14 @@ class TestSwVocabularyMethod:
 class TestSwFrequencyDistributionMethod:
     def test_if_return_list_the_frequence_of_list_with_unique_word(self):
         text_handler = TextHandler(["bufalo"])
-        assert text_handler.sw_frequency_distribution() == [{"text1": [1]}]
+        assert text_handler.sw_frequency_distribution() == {"text1": [1]}
 
         text_handler = TextHandler(["bufalo bufalo bufalo"])
-        assert text_handler.sw_frequency_distribution() == [{"text1": [3]}]
+        assert text_handler.sw_frequency_distribution() == {"text1": [3]}
 
     def test_if_return_list_the_frequence_of_text_empty(self):
         text_handler = TextHandler([""])
-        assert text_handler.sw_frequency_distribution() == [{"text1": []}]
+        assert text_handler.sw_frequency_distribution() == {"text1": []}
 
     def test_if_return_list_the_frequence_of_multiples_text(self):
         text_handler = TextHandler(
@@ -151,13 +151,13 @@ class TestSwFrequencyDistributionMethod:
         costa = 1
         leonardo = 1
 
-        assert text_handler.sw_frequency_distribution() == [
-            {"text1": [bernardo, gomes, abreu, 0, 0, 0, 0]},
-            {"text2": [0, 0, 0, yasmine, 0, 0, 0]},
-            {"text3": [0, 0, 0, 0, melo, 0, 0]},
-            {"text4": [0, 0, 0, 0, 0, costa, 0]},
-            {"text5": [0, gomes, abreu, 0, 0, 0, leonardo]},
-        ]
+        assert text_handler.sw_frequency_distribution() == {
+            "text1": [bernardo, gomes, abreu, 0, 0, 0, 0],
+            "text2": [0, 0, 0, yasmine, 0, 0, 0],
+            "text3": [0, 0, 0, 0, melo, 0, 0],
+            "text4": [0, 0, 0, 0, 0, costa, 0],
+            "text5": [0, gomes, abreu, 0, 0, 0, leonardo],
+        }
 
 
 class TestNgVocabularyMethod:
@@ -292,8 +292,8 @@ class TestFromDocument:
                 "É fácil escrever código. Difícil é escrever código que funcione.",
             ]
         )
-        assert text_handler.sw_frequency_distribution() == [
-            {"text1": [1, 1, 1, 1, 0, 0, 0]},
-            {"text2": [0, 1, 0, 2, 2, 1, 1]},
-        ]
+        assert text_handler.sw_frequency_distribution() == {
+            "text1": [1, 1, 1, 1, 0, 0, 0],
+            "text2": [0, 1, 0, 2, 2, 1, 1],
+        }
 
