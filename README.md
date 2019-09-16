@@ -74,6 +74,8 @@ O *TextHandler* é uma classe que recebe como paramêtro uma lista de string, qu
 
 Para realizar o processamento do texto, a biblioteca *nltk* foi utilizada.
 
+Um dos requisitos do projeto é a remoção das stop-words. Para resolver isso,utilizei uma lista de palavras encontradas no link: [gist stop-words](https://gist.github.com/alopes/5358189).
+
 #### Métodos e suas funções:
 
 1. sw_vocabulary
